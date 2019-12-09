@@ -1,0 +1,13 @@
+// See https://aka.ms/vscode-remote/devcontainer.json for format details.
+{
+    "name": "homeassistant-pyozw Dev",
+    "dockerFile": "Dockerfile",
+    "runArgs": ["-e", "GIT_EDITOR=code --wait"],
+    "extensions": [
+      "esbenp.prettier-vscode"
+    ],
+    "settings": {
+      "files.trimTrailingWhitespace": true,
+      "terminal.integrated.shell.linux": "/bin/bash"
+    }
+  }
