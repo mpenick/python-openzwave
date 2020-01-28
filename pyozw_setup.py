@@ -185,6 +185,20 @@ class Template(object):
                     for ssubstitute in ['', 'value_classes', 'platform']:
                         ctx['extra_compile_args'] += [ os.path.normpath(os.path.join(extra, ssubstitute)) ]
 
+        elif sys.platform.startswith("netbsd"):
+            os.environ["CPPFLAGS"] = "-Wno-unused-private-field"
+            if static:
+                ctx['libraries'] += [ "usb-1.0", "stdc++" ]
+                ctx['extra_objects'] = [ "{0}/libopenzwave.a".format(self.openzwave) ]
+                ctx['include_dirs'] += [ "{0}/cpp/build/linux".format(self.openzwave) ]
+            else:
+                import pyozw_pkgconfig
+                ctx['libraries'] += [ "openzwave" ]
+                extra = pyozw_pkgconfig.cflags('libopenzwave')
+                if extra != '':
+                    for ssubstitute in ['', 'value_classes', 'platform']:
+                        ctx['extra_compile_args'] += [ os.path.normpath(os.path.join(extra, ssubstitute)) ]
+
         elif sys.platform.startswith("sunos"):
             if static:
                 ctx['libraries'] += [ "usb-1.0", "stdc++",'resolv' ]
@@ -333,6 +347,10 @@ class Template(object):
             log.info("Build openzwave ... be patient ...")
             proc = Popen('gmake', stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
 
+        elif sys.platform.startswith("netbsd"):
+            log.info("Build openzwave ... be patient ...")
+            proc = Popen('gmake', stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
+
         elif sys.platform.startswith("sunos"):
             log.info("Build openzwave ... be patient ...")
             # fixed command issues to Popen
@@ -405,6 +423,9 @@ class Template(object):
         elif sys.platform.startswith("freebsd"):
             proc = Popen([ 'gmake', 'install' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
 
+        elif sys.platform.startswith("netbsd"):
+            proc = Popen([ 'gmake', 'install' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
+
         elif sys.platform.startswith("sunos"):
             proc = Popen([ 'make', 'PREFIX=/opt/local', 'install' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
 
@@ -443,6 +464,12 @@ class Template(object):
             proc = Popen([ 'ldconfig', ldpath ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
 
         elif sys.platform.startswith("freebsd"):
+            import pyozw_pkgconfig
+            ldpath = pyozw_pkgconfig.libs_only_l('libopenzwave')[2:]
+            log.info("ldconfig openzwave in {0} so ... be patient ...".format(ldpath))
+            proc = Popen([ 'ldconfig', ldpath ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
+
+        elif sys.platform.startswith("netbsd"):
             import pyozw_pkgconfig
             ldpath = pyozw_pkgconfig.libs_only_l('libopenzwave')[2:]
             log.info("ldconfig openzwave in {0} so ... be patient ...".format(ldpath))
@@ -541,6 +568,9 @@ class Template(object):
             proc = Popen([ 'make', 'clean' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
 
         elif sys.platform.startswith("freebsd"):
+            proc = Popen([ 'gmake', 'clean' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
+
+        elif sys.platform.startswith("netbsd"):
             proc = Popen([ 'gmake', 'clean' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
 
         elif sys.platform.startswith("sunos"):
