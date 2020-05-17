@@ -267,7 +267,7 @@ src-lib/libopenzwave/libopenzwave.cpp: openzwave/.lib/
 	${PYTHON_EXEC} setup-lib.py build --flavor=dev
 
 openzwave:
-	git clone -b hass git://github.com/home-assistant/open-zwave.git openzwave
+	git clone -b hass https://github.com/mpenick/open-zwave.git openzwave
 
 openzwave.gzip:
 	wget --no-check-certificate https://codeload.github.com/home-assistant/open-zwave/zip/hass
