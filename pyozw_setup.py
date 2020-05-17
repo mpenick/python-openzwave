@@ -659,7 +659,7 @@ class Template(object):
         except Exception:
             log.warn("Can't get package list from pip.")
 
-    def get_openzwave(self, url='https://codeload.github.com/home-assistant/open-zwave/zip/hass'):
+    def get_openzwave(self, url='https://codeload.github.com/mpenick/open-zwave/zip/hass'):
         #Get openzwave
         """download an archive to a specific location"""
         dest,tail = os.path.split(self.openzwave)
@@ -736,7 +736,7 @@ class DevTemplate(Template):
         ctx = self.system_context(ctx, static=True)
         return ctx
 
-    def get_openzwave(self, url='https://codeload.github.com/home-assistant/open-zwave/zip/hass'):
+    def get_openzwave(self, url='https://codeload.github.com/mpenick/open-zwave/zip/hass'):
         return True
 
 class GitTemplate(Template):
@@ -752,7 +752,7 @@ class GitTemplate(Template):
         ctx = self.system_context(ctx, static=True)
         return ctx
 
-    def get_openzwave(self, url='https://codeload.github.com/home-assistant/open-zwave/zip/hass'):
+    def get_openzwave(self, url='https://codeload.github.com/mpenick/open-zwave/zip/hass'):
         return Template.get_openzwave(self, url)
 
     def clean_all(self):
@@ -808,12 +808,12 @@ class OzwdevTemplate(GitTemplate):
     def __init__(self, **args):
         Template.__init__(self, openzwave=os.path.join("openzwave-git", 'open-zwave-Dev'), **args)
 
-    def get_openzwave(self, url='https://codeload.github.com/home-assistant/open-zwave/zip/dev'):
+    def get_openzwave(self, url='https://codeload.github.com/mpenick/open-zwave/zip/dev'):
         return Template.get_openzwave(self, url)
 
 class OzwdevSharedTemplate(GitSharedTemplate):
 
-    def get_openzwave(self, url='https://codeload.github.com/home-assistant/open-zwave/zip/dev'):
+    def get_openzwave(self, url='https://codeload.github.com/mpenick/open-zwave/zip/dev'):
         return Template.get_openzwave(self, url)
 
 class EmbedTemplate(Template):
@@ -916,7 +916,7 @@ class SharedTemplate(Template):
     def copy_openzwave_config(self):
         return sys.platform.startswith("win")
 
-    def get_openzwave(self, url='https://codeload.github.com/home-assistant/open-zwave/zip/hass'):
+    def get_openzwave(self, url='https://codeload.github.com/mpenick/open-zwave/zip/hass'):
         return True
 
 def parse_template(sysargv):
